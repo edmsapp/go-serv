@@ -1,0 +1,46 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  go-serv: # service name
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: This is FC service
+    go-serv: # function name
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: index.handler
+        Runtime: custom
+        CodeUri: ./
+        MemorySize: 1024
+        InstanceConcurrency: 5
+        Timeout: 120
+        
+      Events:
+        httpTrigger:
+          Type: HTTP
+          Properties:
+            AuthType: ANONYMOUS
+            Methods: ['GET', 'POST', 'PUT']
+      go-serv:
+        Type: 'Aliyun::Serverless::Service'
+        Properties:
+        Description: This is FC service
+        Role: >-
+          acs:ram::1363763281471079:role/aliyunfcgeneratedrole-cn-zhangjiakou-go-serv
+        VpcConfig:
+          VpcId: vpc-8vb6tw1c76uyo6urmfjlv
+          VSwitchIds:
+            - vsw-8vbw7vjfujjg8onxaha6h
+          SecurityGroupId: sg-8vbast3g1gk3j9wwvjo6
+          InternetAccess: tru
+  Domain:
+    Type: Aliyun::Serverless::CustomDomain
+    Properties:
+      DomainName: apis.h5fs.com
+      Protocol: HTTP
+      RouteConfig:
+        Routes:
+          "/*":
+            ServiceName: go-serv
+            FunctionName: go-serv
+  
