@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"go-serv/models"
 	"encoding/json"
+	"fmt"
+	"go-serv/models"
 
 	"github.com/astaxie/beego"
 )
@@ -117,3 +118,14 @@ func (u *UserController) Logout() {
 	u.ServeJSON()
 }
 
+// @Title lists
+// @Description Logs out current logged in user session
+// @Success 200 {object} models.Users
+// @router /lists [get]
+func (u *UserController) Lists() {
+	user := models.Lists()
+	fmt.Print("#", user, "#\n\n")
+
+	u.Data["json"] = user
+	u.ServeJSON()
+}

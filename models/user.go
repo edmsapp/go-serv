@@ -2,12 +2,19 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
+
+	"github.com/astaxie/beego/orm"
 )
 
 var (
 	UserList map[string]*User
+)
+
+var (
+	userLists map[Users]*Users
 )
 
 func init() {
@@ -83,4 +90,20 @@ func Login(username, password string) bool {
 
 func DeleteUser(uid string) {
 	delete(UserList, uid)
+}
+
+func Lists() []Users {
+	// var r
+	o := orm.NewOrm()
+	userstable := new(Users)
+	var ret []Users
+	o.QueryTable(userstable).Filter("id", 1).All(&ret)
+	// r, err := o.Raw("SELECT * FROM users").Exec()
+	// if err == nil {
+	// 	num, _ := r.RowsAffected()
+	// 	fmt.Println("mysql row affected nums: ", num)
+	// }
+
+	fmt.Print("# ", ret, "#\n\n")
+	return ret
 }

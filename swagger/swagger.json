@@ -193,6 +193,23 @@
                 }
             }
         },
+        "/user/lists": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "Logs out current logged in user session",
+                "operationId": "UserController.lists",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Users"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "get": {
                 "tags": [
@@ -380,6 +397,19 @@
                     "$ref": "#/definitions/models.Profile"
                 },
                 "Username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Users": {
+            "title": "Users",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
                     "type": "string"
                 }
             }
